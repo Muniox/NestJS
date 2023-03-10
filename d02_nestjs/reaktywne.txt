@@ -1,0 +1,1 @@
+Reaktywne programowanie wymaga biblioteki rxJS
