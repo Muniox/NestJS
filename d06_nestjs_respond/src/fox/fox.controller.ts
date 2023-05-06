@@ -1,10 +1,13 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, HttpCode, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { CreateFoxDto } from 'src/dto/create-fox.dto';
 
 @Controller('fox')
 export class FoxController {
+
+  @HttpCode(201)
   @Get('/')
-  myFirstAction() {
+  myFirstAction(): CreateFoxDto {
     /**
      * Nest automatycznie wykrywa co zwracamy np:
      * jeśli wyślemy stringa, to wyślemy nagłówek text/html,
@@ -14,8 +17,9 @@ export class FoxController {
     // return '<h1>tekst</h1>';
     // return [1,2,3];
     return {
-      numberOfFoxes: 100,
-      areFoxesHappy: true,
+      name: 'John',
+      age: 100,
+      isAdopted: true,
     };
   }
 }

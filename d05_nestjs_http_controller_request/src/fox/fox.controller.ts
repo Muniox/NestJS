@@ -3,6 +3,7 @@ import { Request } from 'express';
 
 @Controller('fox')
 export class FoxController {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   @Get()
   myFirstAction(
     @Query('name') name: string,

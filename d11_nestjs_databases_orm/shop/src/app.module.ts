@@ -11,7 +11,7 @@ import { UsersModule } from './users/users.module';
     BasketModule,
     ShopModule,
     UsersModule,
-    // TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
