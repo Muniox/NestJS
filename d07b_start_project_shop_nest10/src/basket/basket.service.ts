@@ -17,5 +17,11 @@ export class BasketService {
         isSuccess: false,
       };
     }
+
+    this.items.push(item);
+    return {
+      isSuccess: true,
+      index: this.items.indexOf(item),
+    };
   }
 }

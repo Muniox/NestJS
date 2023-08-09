@@ -69,7 +69,8 @@ export class BasketService {
             .reduce((prev,curr) => prev + curr, 0)
     }
 
-    countPromo(): number {
-        return this.getTotalPrice() > 10 ? 1 : 0;
-    }
+    countPromo(): any{
+        return typeof this.getTotalPrice() === 'number' ? (this.getTotalPrice() as number > 10 ? 1 : 0) : false
+
+    
 }
