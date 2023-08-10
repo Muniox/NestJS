@@ -1,6 +1,6 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
-import { BasketService } from '../basket/basket.service';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { GetListOfProductsResponse } from '../interfaces/shop';
+import { BasketService } from '../basket/basket.service';
 
 @Injectable()
 export class ShopService {
@@ -10,22 +10,21 @@ export class ShopService {
   ) {}
 
   getProducts(): GetListOfProductsResponse {
-    //nigdy nie wydzielaj tablicy jako zmiennej, powoduje to błąd, że ta tablica nie istnieje
     return [
       {
-        name: 'Ogórki kiszone',
-        description: 'Bardzo dobre ogórki',
-        price: 4,
+        name: 'jajka',
+        description: 'Świerze kurze jaja',
+        price: 8.2 - this.basketService.countPromo(),
       },
       {
-        name: 'Super ogórki',
-        description: 'Jeszcze lepsze ogórki',
-        price: 6,
+        name: 'mleko',
+        description: 'Świerze mleko',
+        price: 4.2 - this.basketService.countPromo(),
       },
       {
-        name: 'Ogórki afrykańskie',
-        description: 'Ogórki z dalekich krain',
-        price: 5,
+        name: 'czekolada',
+        description: 'Pyszna czekolada',
+        price: 6.0 - this.basketService.countPromo(),
       },
     ];
   }

@@ -1,7 +1,7 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AddProductDto } from './dto/add-product.dto';
 import {
-  AddProductToBasketResponse,
+  AdProductToBasketResponse,
   GetTotalPriceResponse,
   ListProductsInBasketResponse,
   RemoveProductFromBasketResponse,
@@ -16,7 +16,7 @@ export class BasketService {
     @Inject(forwardRef(() => ShopService)) private shopService: ShopService,
   ) {}
 
-  add(item: AddProductDto): AddProductToBasketResponse {
+  add(item: AddProductDto): AdProductToBasketResponse {
     const { count, name } = item;
     if (
       typeof name !== 'string' ||
@@ -31,15 +31,15 @@ export class BasketService {
     }
 
     this.items.push(item);
+
     return {
       isSuccess: true,
-      index: this.items.indexOf(item),
+      index: this.items.length - 1,
     };
   }
 
   remove(index: number): RemoveProductFromBasketResponse {
     const { items } = this;
-
     if (index < 0 || index >= items.length) {
       return {
         isSuccess: false,
@@ -58,15 +58,15 @@ export class BasketService {
   }
 
   getTotalPrice(): GetTotalPriceResponse {
-    if (!this.items.every((item) => this.shopService.hasProduct(item.name))) {
+    if (this.items.every((item) => this.shopService.hasProduct(item.name))) {
+      const alternativeBasket = this.items.filter((item) =>
+        this.shopService.hasProduct(item.name),
+      );
       return {
         isSuccess: false,
-        alternativeBasket: this.items.filter((item) =>
-          this.shopService.hasProduct(item.name),
-        ),
+        alternativeBasket,
       };
     }
-
     return this.items
       .map(
         (item) =>
@@ -76,6 +76,10 @@ export class BasketService {
   }
 
   countPromo(): any {
-    return (this.getTotalPrice() as number) > 10 ? 1 : 0;
+    return typeof this.getTotalPrice() === 'number'
+      ? (this.getTotalPrice() as number) > 10
+        ? 1
+        : 0
+      : false;
   }
 }
