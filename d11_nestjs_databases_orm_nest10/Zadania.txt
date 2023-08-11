@@ -59,3 +59,7 @@ Zamykanie:
 onModuleDestroy() - rozpoczęcie zamykania apki
 onApplicationShutdown() - wszystkie połączenia HTTP zamknięte, apka zaraz zostanie zniszczona
 aby zadziałało nalezy w main.ts: app.enableShutdownHooks()
+
+Nowy sposób dodawania bazy danych w nest10:
+https://docs.nestjs.com/techniques/configuration - konfigurowanie configu typeorm za pomocą @nest/confug któey ma dotenv pod spodem
+https://docs.nestjs.com/techniques/database - dodanie bazy danych do projektu, najlepiej użyć forRootAsync dla asynchroniczności

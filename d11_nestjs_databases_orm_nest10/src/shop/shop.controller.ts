@@ -12,8 +12,8 @@ import { ShopService } from './shop.service';
 
 @Controller({
   path: 'shop',
-  host: ':name.lvh.me',
-  scope: Scope.REQUEST, // dzieki temu za każdym razem kiedy przychodzi zapytanie tworzy sie nowy obiekt shop controll,
+  // host: ':name.lvh.me',
+  // scope: Scope.REQUEST, // dzieki temu za każdym razem kiedy przychodzi zapytanie tworzy sie nowy obiekt shop controll,
   // dzieki scope możemy rozdzielać nasze objekty aby były różne dla każdego użytkownika
 })
 export class ShopController {
