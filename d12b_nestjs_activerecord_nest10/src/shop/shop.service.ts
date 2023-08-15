@@ -4,22 +4,18 @@ import {
   GetListOfProductsResponse,
   GetOneProductResponse,
 } from '../interfaces/shop';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ShopItem } from './shop-item.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class ShopService {
   constructor(
     @Inject(forwardRef(() => BasketService))
     private basketService: BasketService,
-    @InjectRepository(ShopItem)
-    private shopItemRepository: Repository<ShopItem>,
   ) {}
 
   async getProducts(): Promise<GetListOfProductsResponse> {
     //nigdy nie wydzielaj tablicy jako zmiennej, powoduje to błąd, że ta tablica nie istnieje
-    return await this.shopItemRepository.find();
+    return await ShopItem.find();
   }
 
   async hasProduct(name: string): Promise<boolean> {
@@ -31,11 +27,11 @@ export class ShopService {
   }
 
   async getOneProduct(id: string): Promise<GetOneProductResponse> {
-    return this.shopItemRepository.findOneOrFail({ where: { id } });
+    return ShopItem.findOneOrFail({ where: { id } });
   }
 
   async removeProduct(id: string) {
-    await this.shopItemRepository.delete(id);
+    await ShopItem.delete(id);
   }
 
   async createDummyProduct(): Promise<ShopItem> {
@@ -44,7 +40,7 @@ export class ShopService {
     newItem.name = 'Duży ogórek';
     newItem.description = 'naprawdę duży ogórek';
 
-    await this.shopItemRepository.save(newItem);
+    await newItem.save();
     return newItem;
   }
 
@@ -55,12 +51,12 @@ export class ShopService {
     //3.jest bezpieczniejsza - jeżeli wystąpiła by konkurencja(concurency), to dane będą aktualne
 
     console.log(id);
-    await this.shopItemRepository.update({ id }, { wasEverBought: true });
+    await ShopItem.update({ id }, { wasEverBought: true });
 
-    const item = await this.shopItemRepository.findOneOrFail({ where: { id } }); //lepiej stosować aktualizacje bez pobierania
+    const item = await ShopItem.findOneOrFail({ where: { id } }); //lepiej stosować aktualizacje bez pobierania
 
     item.boughtCounter++; //lepiej stosować aktualizacje bez pobierania
 
-    await this.shopItemRepository.save(item); //lepiej stosować aktualizacje bez pobierania
+    await item.save(); //lepiej stosować aktualizacje bez pobierania
   }
 }

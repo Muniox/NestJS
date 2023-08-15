@@ -71,3 +71,9 @@ Nowy sposób dodawania bazy danych w nest10:
 https://docs.nestjs.com/techniques/configuration - konfigurowanie configu typeorm za pomocą @nest/confug któey ma dotenv pod spodem
 https://docs.nestjs.com/techniques/database - dodanie bazy danych do projektu, najlepiej użyć forRootAsync dla asynchroniczności
 
+W ActiveRecord nie trzeba używać już importowania TypeOrmModule.forFeature()!!!!!
+należy przy tym wyłączyć auto ładowanie entitis w configu i dodać do niego entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+dodatkowe informacje https://docs.nestjs.com/recipes/sql-typeorm
+
+Problem z plikiem DataSource: (chat GPT nie pomógł xD)
+https://stackoverflow.com/questions/75522837/how-to-setup-migrations-along-with-configmodule-in-nestjs

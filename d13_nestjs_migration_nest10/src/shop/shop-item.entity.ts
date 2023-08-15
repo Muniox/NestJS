@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 //pamiętaj o implementacji w interfejsie, tam też należy dodać typ zmiennej!
 //wybranie mariadb w config powoduje zmianę typu 'uuid' na 'unknown' grrrr...
 @Entity()
-export class ShopItem {
+export class ShopItem extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
