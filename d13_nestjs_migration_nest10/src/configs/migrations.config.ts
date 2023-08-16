@@ -1,9 +1,13 @@
+import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { config } from 'dotenv';
+import { NazwaMigracji1692184965207 } from '../../migrations/1692184965207-nazwaMigracji';
 
-export const getTypeOrmConfig = (
-  configService: ConfigService,
-): TypeOrmModuleOptions => ({
+config();
+
+const configService = new ConfigService();
+
+export default new DataSource({
   type: 'mysql',
   host: configService.get<string>('DB_HOST'),
   port: configService.get<number>('DB_PORT'),
