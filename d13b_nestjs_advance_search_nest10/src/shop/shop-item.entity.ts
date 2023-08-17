@@ -8,6 +8,7 @@ export class ShopItem extends BaseEntity {
   id: string;
 
   @Column({
+    default: '',
     length: 25,
   })
   name: string;

@@ -48,6 +48,7 @@ GET http://localhost:3000/basket/total-price
 GET http://localhost:3000/shop/2
 DELETE http://localhost:3000/shop/2
 POST http://localhost:3000/shop/
+GET http://localhost:3000/shop/find
 
 Zapamiętaj!
 1. Moduły mają podzielić naszą aplikację na zbiory danych funkcjonalności np. użytkownicy, koty, sklep, koszyk

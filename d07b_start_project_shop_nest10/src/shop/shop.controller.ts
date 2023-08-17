@@ -7,7 +7,7 @@ export class ShopController {
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
   @Get('/')
-  getLtstOfProducts(): GetListOfProductsResponse {
+  getListOfProducts(): GetListOfProductsResponse {
     return this.shopService.getProducts();
   }
 }

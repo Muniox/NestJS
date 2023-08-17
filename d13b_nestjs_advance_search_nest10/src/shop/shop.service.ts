@@ -60,7 +60,17 @@ export class ShopService {
     await item.save(); //lepiej stosować aktualizacje bez pobierania
   }
 
-  findProducts() {
-    return Promise.resolve(undefined);
+  async findProducts(searchTerm: string): Promise<GetListOfProductsResponse> {
+    return await ShopItem.find({
+      // select: ['id', 'price'], //tylko jeśli mamy kłopoty z wydajnością
+      where: {
+        description: searchTerm,
+        price: 1.0,
+      },
+      order: {
+        price: 'DESC',
+        createdAt: 'ASC',
+      },
+    });
   }
 }

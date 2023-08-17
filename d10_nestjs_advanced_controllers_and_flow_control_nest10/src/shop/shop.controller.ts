@@ -20,14 +20,14 @@ export class ShopController {
   onApplicationBootstrap() {
     console.log('Załadowany');
   }
-  onApplicatopnShutdown() {
+  onApplicationShutdown() {
     console.log('apka zaraz zniknie');
   }
 
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
   @Get('/')
-  getLtstOfProducts(): GetListOfProductsResponse {
+  getListOfProducts(): GetListOfProductsResponse {
     return this.shopService.getProducts();
   }
 
@@ -36,6 +36,6 @@ export class ShopController {
     @Param('age', ParseIntPipe) age: number,
     @HostParam('name') siteName: string,
   ): string {
-    return `Witah na sklepie ${siteName}`;
+    return `Witam na sklepie ${siteName}`;
   }
 }

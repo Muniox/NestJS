@@ -26,20 +26,22 @@ export class ShopController {
   onApplicationBootstrap() {
     console.log('Załadowany');
   }
-  onApplicatopnShutdown() {
+  onApplicationShutdown() {
     console.log('apka zaraz zniknie');
   }
 
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
   @Get('/')
-  async getLtstOfProducts(): Promise<GetListOfProductsResponse> {
+  async getListOfProducts(): Promise<GetListOfProductsResponse> {
     return await this.shopService.getProducts();
   }
 
-  @Get('/find')
-  testFindItem(): Promise<GetListOfProductsResponse> {
-    return this.shopService.findProducts();
+  @Get('/find/:searchTerm')
+  async testFindItem(
+    @Param('searchTerm') searchTerm: string,
+  ): Promise<GetListOfProductsResponse> {
+    return await this.shopService.findProducts(searchTerm);
   }
 
   @Get('/welcome')
