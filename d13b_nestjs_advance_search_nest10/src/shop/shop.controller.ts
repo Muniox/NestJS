@@ -13,6 +13,7 @@ import {
   CreateProductResponse,
   GetListOfProductsResponse,
   GetOneProductResponse,
+  GetPaginatedListOfProductsResponse,
 } from '../interfaces/shop';
 import { ShopService } from './shop.service';
 
@@ -32,9 +33,11 @@ export class ShopController {
 
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
-  @Get('/')
-  async getListOfProducts(): Promise<GetListOfProductsResponse> {
-    return await this.shopService.getProducts();
+  @Get('/:pageNumber')
+  async getListOfProducts(
+    @Param('pageNumber', ParseIntPipe) pageNumber: number,
+  ): Promise<GetPaginatedListOfProductsResponse> {
+    return await this.shopService.getProducts(pageNumber);
   }
 
   @Get('/find/:searchTerm')
