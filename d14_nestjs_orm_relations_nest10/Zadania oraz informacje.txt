@@ -80,4 +80,4 @@ Problem z plikiem DataSource: (chat GPT nie pomógł xD)
 https://stackoverflow.com/questions/75522837/how-to-setup-migrations-along-with-configmodule-in-nestjs
 https://www.youtube.com/watch?v=MSMw6NO2dOo&ab_channel=TenacityDev
 
-10:25
+22:50

@@ -1,4 +1,17 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ShopItemsDetails } from './shop-item-details.entity';
+import { ShopSet } from './shop-set.entity';
 
 //pamiętaj o implementacji w interfejsie, tam też należy dodać typ zmiennej!
 //wybranie mariadb w config powoduje zmianę typu 'uuid' na 'unknown' grrrr...
@@ -40,4 +53,21 @@ export class ShopItem extends BaseEntity {
     default: false,
   })
   wasEverBought: boolean;
+
+  @OneToOne(() => ShopItemsDetails)
+  @JoinColumn()
+  details: ShopItemsDetails;
+
+  //jest to powiązanie w tej samej tabeli połączenie mainShopItem to id, a nastepnie id to mainShopItem
+  /** Subprodukt */
+  @ManyToOne(() => ShopItem, (entity) => entity.subShopItems)
+  mainShopItem: ShopItem;
+
+  /**Produkt główny */
+  @OneToMany(() => ShopItem, (entity) => entity.mainShopItem)
+  subShopItems: ShopItem[];
+
+  @ManyToMany(() => ShopSet, (entity) => entity.items)
+  @JoinTable()
+  sets: ShopSet[];
 }
