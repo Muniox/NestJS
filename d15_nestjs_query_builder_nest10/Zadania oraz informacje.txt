@@ -1,0 +1,103 @@
+(zrobione) 1. Stwórz nową aplikację Nestową.
+
+(zrobione) 2. Stwórz kontroler shop.
+
+(zrobione) 3. Stwórz akcję na GET /shop, która zwróci listę przedmiotów  - d dowolne rzeczy - ich nazwę, opis i cenę netto.
+
+(zrobione) 4. Odpowiednio otypuj powyższą akcję.
+
+(zrobione) 5. Stwórz service shop i przenieś działanie powyżej akcji do tego service-u. Pamiętaj o pełnym otypowaniu
+
+(zrobione) 6. Stwórz kontroler basket i service basket. W service stwórz pustą tablicę jako pole, które będzie oznaczało koszyk użytkownika.
+
+(poniżej zauważysz, że przy każdym przeładnowaniu Twojego back-endu, dane znikają - to zupełnie normalne. Właśnie dlatego dalej zapoznamy się z obsługą baz dancych na stałe)
+
+(zrobione) 7. Stwórz akcję POST /basket, która przyjmuje body i nazwę i ilość.
+- Pamiętaj o tym, żeby odpowiednio otypować dane oraz żeby cała logika działa się w service.
+- Dodaj dany produkt do tablicy 
+- Akcja ma zwracać obiekt {isSuccess: true, index: number}, gdzie index  to numer elementu w tablicy.
+- Wyświetlaj w kosoli tablicę po dodaniu do niej elementu. Póki co dla testów.
+- * Możesz dodac walidację - to zwsze dobry pomysł! Jeżeli name nie będzie stringiem lub count liczbą lub name 
+będzie pust lub count mniejszy od 1 - to nie dodawaj elementu z zwróć {isSuccess: false}
+
+(zrobione) 8. Stwórz akcję Delete/basket/:index, która usuwa dany element z koszyka. Zwracaj {isSuccess: true}, jeżeli taki
+  istnije i go usuń lub {isSuccess: false}, jeżeli nie.
+- Wyświetlaj w konsoli tablicę po usunięciu z niej elementu. Póki co dla testów.
+
+(zrobione) 9. Zaimportuj w service basket - service shop. Stwórz w service shop metodę do sprawdzania czy prdukt o takiej 
+  nazwie istnieje. Zmień akcję POST /basket tak, żeby przy próbie dodania nieistniejącego przedmiotu elementu zwracało {isSuccess: false}.
+
+(zrobione) 10. Dodaj akcję GET /basket, która zwraca zawartość koszyka.
+- Usuń console.log z dodawania i usuwania elementu. To było dla testu, ale już możesz testować na GET /basket
+
+(zrobione) 11. Dodaj akcję GET /basket/total-price, która zwraca cenę brutto. Dodaj odpowiednią metodę do service-u shop,
+  która pozwoli Ci pobrać cenę dla danego produktu. Pamiętaj, żeby pomnożyć przez 1,23 - żeby uzyskać cenę brutto.
+- * W rzeczywistości na tym etapie musiałoby nastąpić ponowne sprawdzanie czy istnieje taki element do zakupu.
+  Jeżeli nie ( np. w międzyczasie się skończył ) to powinien pojawić się stosowny błąd.
+- ** Z punktu widzenia UX, najlepiej byłobyw takim przypadku zaproponować użytkownikowi alternatywny koszyk - bez rzeczy, których nie ma.
+
+requests:
+GET http://localhost:3000/basket
+POST http://localhost:3000/basket {
+                                  	"id": "e4ee43f5-f417-49c6-b9d1-92d52081b9eb",
+                                  	"name": "Ogórki kiszone",
+                                  	"count": 5
+                                  }
+DELETE http://localhost:3000/basket/0
+GET http://localhost:3000/basket/total-price
+GET http://localhost:3000/shop/2
+DELETE http://localhost:3000/shop/2
+POST http://localhost:3000/shop/
+GET http://localhost:3000/shop/find
+
+Zapamiętaj!
+1. Moduły mają podzielić naszą aplikację na zbiory danych funkcjonalności np. użytkownicy, koty, sklep, koszyk
+2. controllers - rejestruje kontrolery z akcjami w danym module.
+3. providers - rejestruje provider-y w danym module.
+4. export - używaj, żeby udostępnić  np. provider na zewnątrz modułu.
+5. import - używaj, aby zaimportować do jednego modułu inny (np. żeby użyć to co ten inny eksportuje)
+
+Dodatkowo!
+nest g res <nazwa> - generuje modul, controller, service
+
+onModuleInit() - mouduł i jego zależności zostały załadowane
+onApplicationBoostrap() - wszystkie moduły i ich zależności zostały załadowane
+
+Zamykanie:
+onModuleDestroy() - rozpoczęcie zamykania apki
+onApplicationShutdown() - wszystkie połączenia HTTP zamknięte, apka zaraz zostanie zniszczona
+aby zadziałało nalezy w main.ts: app.enableShutdownHooks()
+
+Nowy sposób dodawania bazy danych w nest10:
+https://docs.nestjs.com/techniques/configuration - konfigurowanie configu typeorm za pomocą @nest/confug któey ma dotenv pod spodem
+https://docs.nestjs.com/techniques/database - dodanie bazy danych do projektu, najlepiej użyć forRootAsync dla asynchroniczności
+
+W ActiveRecord nie trzeba używać już importowania TypeOrmModule.forFeature()!!!!!
+należy przy tym wyłączyć auto ładowanie entitis w configu i dodać do niego entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+dodatkowe informacje https://docs.nestjs.com/recipes/sql-typeorm
+
+Problem z plikiem DataSource: (chat GPT nie pomógł xD)
+https://stackoverflow.com/questions/75522837/how-to-setup-migrations-along-with-configmodule-in-nestjs
+https://www.youtube.com/watch?v=MSMw6NO2dOo&ab_channel=TenacityDev
+
+----QueryBuilder------
+ActiveRecord:
+----deprecated
+import {getConnection} from "typeorm";
+await getConnection().createQueryBuilder()
+----nowy sposób
+import {DataSource} from "typeorm";
+private readonly dataSource: DataSource,
+const count = await this.dataSource.createQueryBuilder()
+
+----chtba działa dla data DataMaper stary sposób
+DataMaper (repository):
+repozytoriumEncji.createQueryBuilder("nazwaEncjiZMalejLitery")
+
+.getOne() - pojedyncza encja 
+.getMany() - wiele encji 
+.getRawOne() - pojedynczy rezultat
+.getRawMany() - wiele rezultatów 
+
+.orWhere() - aby dodac warunek LUB
+.andWhere() - aby dodać warunek ORAZ
