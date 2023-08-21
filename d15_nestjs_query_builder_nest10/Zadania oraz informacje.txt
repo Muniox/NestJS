@@ -80,24 +80,3 @@ Problem z plikiem DataSource: (chat GPT nie pomógł xD)
 https://stackoverflow.com/questions/75522837/how-to-setup-migrations-along-with-configmodule-in-nestjs
 https://www.youtube.com/watch?v=MSMw6NO2dOo&ab_channel=TenacityDev
 
-----QueryBuilder------
-ActiveRecord:
-----deprecated
-import {getConnection} from "typeorm";
-await getConnection().createQueryBuilder()
-----nowy sposób
-import {DataSource} from "typeorm";
-private readonly dataSource: DataSource,
-const count = await this.dataSource.createQueryBuilder()
-
-----chtba działa dla data DataMaper stary sposób
-DataMaper (repository):
-repozytoriumEncji.createQueryBuilder("nazwaEncjiZMalejLitery")
-
-.getOne() - pojedyncza encja 
-.getMany() - wiele encji 
-.getRawOne() - pojedynczy rezultat
-.getRawMany() - wiele rezultatów 
-
-.orWhere() - aby dodac warunek LUB
-.andWhere() - aby dodać warunek ORAZ
