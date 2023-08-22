@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AddProductDto } from './dto/add-product.dto';
+import { AddItemDto } from './dto/add-product.dto';
 import {
   AddToBasketResponse,
   GetTotalBasketPriceResponse,
@@ -7,15 +7,14 @@ import {
   RemoveFromBasketResponse,
 } from 'src/interfaces/basket';
 import { ShopService } from 'src/shop/shop.service';
+import { ItemInBasket } from './item-in-basket.entity';
 
 @Injectable()
 export class BasketService {
-  private items: AddProductDto[] = [];
-
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
-  async add(item: AddProductDto): Promise<AddToBasketResponse> {
-    const { count, name } = item;
+  async add(product: AddItemDto): Promise<AddToBasketResponse> {
+    const { count, name } = product;
     if (
       typeof name !== 'string' ||
       typeof count !== 'number' ||
@@ -28,17 +27,22 @@ export class BasketService {
       };
     }
 
-    this.items.push(item);
+    const item = new ItemInBasket();
+    item.name = name;
+    item.count = count;
+
+    await item.save();
 
     return {
       isSuccess: true,
-      index: this.items.indexOf(item),
+      id: item.id,
     };
   }
 
-  remove(number: number): RemoveFromBasketResponse {
-    if (this.items[number]) {
-      this.items.splice(number, 1);
+  async remove(id: string): Promise<RemoveFromBasketResponse> {
+    const item = await ItemInBasket.findOneBy({ id });
+    if (item) {
+      await item.remove();
 
       return {
         isSuccess: true,
@@ -50,14 +54,16 @@ export class BasketService {
     };
   }
 
-  getAll(): GetBasketResponse {
-    return this.items;
+  async getAll(): Promise<ItemInBasket[]> {
+    return ItemInBasket.find();
   }
 
   async getTotalPrice(): Promise<GetTotalBasketPriceResponse> {
+    const items = await this.getAll();
+
     return (
       await Promise.all(
-        this.items.map(
+        items.map(
           async (item) =>
             (await this.shopService.getPrice(item.name)) * item.count * 1.23,
         ),

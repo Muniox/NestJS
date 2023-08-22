@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AddProductDto } from './dto/add-product.dto';
+import { AddItemDto } from './dto/add-product.dto';
 import {
   AddToBasketResponse,
   GetTotalBasketPriceResponse,
@@ -10,11 +10,11 @@ import { ShopService } from 'src/shop/shop.service';
 
 @Injectable()
 export class BasketService {
-  private items: AddProductDto[] = [];
+  private items: AddItemDto[] = [];
 
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
-  async add(item: AddProductDto): Promise<AddToBasketResponse> {
+  async add(item: AddItemDto): Promise<AddToBasketResponse> {
     const { count, name } = item;
     if (
       typeof name !== 'string' ||

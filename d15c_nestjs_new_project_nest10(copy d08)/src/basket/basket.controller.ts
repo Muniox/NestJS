@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { AddProductDto } from './dto/add-product.dto';
+import { AddItemDto } from './dto/add-product.dto';
 import { BasketService } from './basket.service';
 import {
   AddToBasketResponse,
@@ -24,7 +24,7 @@ export class BasketController {
   //Dto tworzymy tylko dla elementów które otrzymujemy od użytkownika, clienta
   @Post('/')
   async addProductToBasket(
-    @Body() item: AddProductDto,
+    @Body() item: AddItemDto,
   ): Promise<AddToBasketResponse> {
     return await this.basketService.add(item);
   }
