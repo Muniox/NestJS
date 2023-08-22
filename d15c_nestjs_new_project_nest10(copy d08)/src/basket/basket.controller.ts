@@ -5,10 +5,9 @@ import {
   Get,
   Inject,
   Param,
-  ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { AddItemDto } from './dto/add-product.dto';
+import { AddItemDto } from './dto/add-item.dto';
 import { BasketService } from './basket.service';
 import {
   AddToBasketResponse,
@@ -21,7 +20,6 @@ import {
 export class BasketController {
   constructor(@Inject(BasketService) private basketService: BasketService) {}
 
-  //Dto tworzymy tylko dla elementów które otrzymujemy od użytkownika, clienta
   @Post('/')
   async addProductToBasket(
     @Body() item: AddItemDto,
@@ -29,16 +27,21 @@ export class BasketController {
     return await this.basketService.add(item);
   }
 
-  @Delete('/:index')
-  removeProduct(
-    @Param('index', ParseIntPipe) index: number,
-  ): RemoveFromBasketResponse {
-    return this.basketService.remove(index);
+  @Delete('/all')
+  async clearBasket() {
+    await this.basketService.clearBasket();
+  }
+
+  @Delete('/:id')
+  async removeProduct(
+    @Param('index') id: string,
+  ): Promise<RemoveFromBasketResponse> {
+    return await this.basketService.remove(id);
   }
 
   @Get('/')
-  getBasket(): GetBasketResponse {
-    return this.basketService.getAll();
+  async getBasket(): Promise<GetBasketResponse> {
+    return await this.basketService.getAll();
   }
 
   @Get('/total-price')

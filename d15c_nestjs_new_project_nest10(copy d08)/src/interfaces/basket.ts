@@ -1,4 +1,4 @@
-import { AddItemDto } from 'src/basket/dto/add-product.dto';
+import { AddItemDto } from 'src/basket/dto/add-item.dto';
 
 export type AddToBasketResponse =
   | {
