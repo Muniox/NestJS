@@ -55,4 +55,4 @@ repozytoriumEncji.createQueryBuilder("nazwaEncjiZMalejLitery")
 .orWhere() - aby dodać warunek LUB
 .andWhere() - aby dodać warunek ORAZ
 
-24:36
+od 26:38 zaczyna się jakiś nowy projekt, niewiadomo skąd go Kuba wytrzasnął, postaram się go stworzyć z zlepków które są na filmie

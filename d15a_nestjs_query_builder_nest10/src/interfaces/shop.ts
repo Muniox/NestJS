@@ -1,11 +1,11 @@
-export interface ShopItem {
+export interface ShopItemEntity {
   id: string;
   name: string;
   description: string;
   price: number;
 }
 
-export type GetListOfProductsResponse = ShopItem[];
+export type GetListOfProductsResponse = ShopItemEntity[];
 
 //jeśli implementujemy w repository ten interfejs, to nie musimy już w encji
 export interface ShopItemInterface {
@@ -16,11 +16,17 @@ export interface ShopItemInterface {
   createdAt: Date;
 }
 
-export type GetOneProductResponse = ShopItem;
+export type GetOneProductResponse = ShopItemEntity;
 
-export type CreateProductResponse = ShopItem;
+export type CreateProductResponse = ShopItemEntity;
 
 export interface GetPaginatedListOfProductsResponse {
-  items: ShopItem[];
+  items: ShopItemEntity[];
   pagesCount: number;
+}
+
+export interface ShopItemInterface {
+  name: string;
+  description: string;
+  price: number;
 }

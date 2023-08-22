@@ -12,11 +12,12 @@ import {
 } from 'typeorm';
 import { ShopItemsDetails } from './shop-item-details.entity';
 import { ShopSet } from './shop-set.entity';
+import { ShopItemInterface } from 'src/interfaces/shop';
 
 //pamiętaj o implementacji w interfejsie, tam też należy dodać typ zmiennej!
 //wybranie mariadb w config powoduje zmianę typu 'uuid' na 'unknown' grrrr...
 @Entity()
-export class ShopItem extends BaseEntity {
+export class ShopItem extends BaseEntity implements ShopItemInterface {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -35,7 +36,7 @@ export class ShopItem extends BaseEntity {
 
   @Column({
     type: 'decimal',
-    precision: 6,
+    precision: 7,
     scale: 2,
   })
   price: number;
@@ -46,7 +47,9 @@ export class ShopItem extends BaseEntity {
   })
   createdAt: Date;
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   boughtCounter: number;
 
   @Column({

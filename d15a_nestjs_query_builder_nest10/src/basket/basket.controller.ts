@@ -21,7 +21,6 @@ import {
 export class BasketController {
   constructor(@Inject(BasketService) private basketService: BasketService) {}
 
-  //Dto tworzymy tylko dla elementów które otrzymujemy od użytkownika, clienta
   @Post('/')
   addProductToBasket(@Body() item: AddProductDto): AddProductToBasketResponse {
     return this.basketService.add(item);
