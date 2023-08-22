@@ -2,27 +2,38 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AddItemDto } from './dto/add-item.dto';
 import {
   AddToBasketResponse,
+  GetBasketResponse,
   GetTotalBasketPriceResponse,
   RemoveFromBasketResponse,
 } from 'src/interfaces/basket';
 import { ShopService } from 'src/shop/shop.service';
 import { ItemInBasket } from './item-in-basket.entity';
+import { UserService } from '../user/user.service';
+import { Equal } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class BasketService {
-  constructor(@Inject(ShopService) private shopService: ShopService) {}
+  constructor(
+    @Inject(ShopService) private shopService: ShopService,
+    @Inject(UserService) private userService: UserService,
+  ) {}
 
   async add(product: AddItemDto): Promise<AddToBasketResponse> {
-    const { count, id } = product;
+    const { count, productId, userId } = product;
 
-    const shopItem = await this.shopService.getOneItem(id);
+    const shopItem = await this.shopService.getOneItem(productId);
+    const user = await this.userService.getOneUser(userId);
 
     if (
-      typeof id !== 'string' ||
+      typeof productId !== 'string' ||
+      typeof userId !== 'string' ||
       typeof count !== 'number' ||
-      id === '' ||
+      productId === '' ||
+      userId === '' ||
       count < 1 ||
-      !shopItem
+      !shopItem ||
+      !user
     ) {
       return {
         isSuccess: false,
@@ -35,6 +46,7 @@ export class BasketService {
     await item.save();
 
     item.shopItem = shopItem;
+    item.user = user;
 
     await item.save();
 
@@ -59,8 +71,17 @@ export class BasketService {
     };
   }
 
-  async getAll(): Promise<ItemInBasket[]> {
-    return ItemInBasket.find({
+  async getAllForUser(userId: string): Promise<ItemInBasket[]> {
+    const user: User = await this.userService.getOneUser(userId);
+
+    if (!user) {
+      throw new Error('User not found!');
+    }
+
+    return await ItemInBasket.find({
+      where: {
+        user: Equal(user.id),
+      },
       relations: ['shopItem'],
     });
   }
@@ -69,8 +90,8 @@ export class BasketService {
     await ItemInBasket.delete({});
   }
 
-  async getTotalPrice(): Promise<GetTotalBasketPriceResponse> {
-    const items = await this.getAll();
+  async getTotalPrice(userId: string): Promise<GetTotalBasketPriceResponse> {
+    const items = await this.getAllForUser(userId);
 
     return (
       await Promise.all(

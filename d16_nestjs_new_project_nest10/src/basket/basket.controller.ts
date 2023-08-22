@@ -34,18 +34,20 @@ export class BasketController {
 
   @Delete('/:id')
   async removeProduct(
-    @Param('index') id: string,
+    @Param('id') id: string,
   ): Promise<RemoveFromBasketResponse> {
     return await this.basketService.remove(id);
   }
 
-  @Get('/')
-  async getBasket(): Promise<GetBasketResponse> {
-    return await this.basketService.getAll();
+  @Get('/:userId')
+  async getBasket(@Param('userId') userId: string): Promise<GetBasketResponse> {
+    return await this.basketService.getAllForUser(userId);
   }
 
-  @Get('/total-price')
-  async getTotalBasketPrice(): Promise<GetTotalBasketPriceResponse> {
-    return await this.basketService.getTotalPrice();
+  @Get('/total-price/:userId')
+  async getTotalBasketPrice(
+    @Param('userId') userId: string,
+  ): Promise<GetTotalBasketPriceResponse> {
+    return await this.basketService.getTotalPrice(userId);
   }
 }

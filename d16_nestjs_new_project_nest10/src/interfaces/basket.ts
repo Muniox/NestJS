@@ -1,5 +1,3 @@
-import { AddItemDto } from 'src/basket/dto/add-item.dto';
-
 export type AddToBasketResponse =
   | {
       isSuccess: true;
@@ -13,11 +11,11 @@ export interface RemoveFromBasketResponse {
   isSuccess: boolean;
 }
 
-export type GetBasketResponse = AddItemDto[];
+interface OneItemInBasket {
+  id: string;
+  count: number;
+}
 
-export type GetTotalBasketPriceResponse =
-  | number
-  | {
-      isSuccess: false;
-      alternativeBasket: AddItemDto[];
-    };
+export type GetBasketResponse = OneItemInBasket[];
+
+export type GetTotalBasketPriceResponse = number;
