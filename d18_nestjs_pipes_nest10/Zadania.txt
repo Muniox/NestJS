@@ -55,4 +55,4 @@ repozytoriumEncji.createQueryBuilder("nazwaEncjiZMalejLitery")
 .orWhere() - aby dodać warunek LUB
 .andWhere() - aby dodać warunek ORAZ
 
-22:08
+14:23
