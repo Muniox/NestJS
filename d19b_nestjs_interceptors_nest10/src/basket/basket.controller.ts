@@ -6,6 +6,8 @@ import {
   Inject,
   Param,
   Post,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AddItemDto } from './dto/add-item.dto';
 import { BasketService } from './basket.service';
@@ -16,6 +18,9 @@ import {
   GetTotalBasketPriceResponse,
   GetBasketStatsResponse,
 } from 'src/interfaces/basket';
+import { PasswordProtectGuard } from '../guards/Password-protect.guard';
+import { UsePassword } from '../decorators/use-password.decorator';
+import { MyTimeoutInterceptor } from '../interceptors/my-timeout.interceptor';
 
 @Controller('basket')
 export class BasketController {
@@ -42,13 +47,19 @@ export class BasketController {
   }
 
   @Get('/admin')
+  @UseGuards(PasswordProtectGuard)
+  @UsePassword('admin1')
   async getBasketForAdmin(): Promise<GetBasketResponse> {
     return await this.basketService.getAllForAdmin();
   }
 
   @Get('/stats')
+  @UseGuards(PasswordProtectGuard)
+  @UsePassword('passforstats')
+  @UseInterceptors(MyTimeoutInterceptor)
   async getStats(): Promise<GetBasketStatsResponse> {
-    return await this.basketService.getStats();
+    return new Promise((resolve) => {});
+    // return await this.basketService.getStats();
   }
 
   @Get('/:userId')
