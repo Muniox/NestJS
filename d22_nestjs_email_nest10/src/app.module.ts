@@ -8,6 +8,7 @@ import { ShopModule } from './shop/shop.module';
 import { CacheModule } from './cache/cache.module';
 import { DiscountCodeModule } from './discount-code/discount-code.module';
 import { CronModule } from './cron/cron.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CronModule } from './cron/cron.module';
     CacheModule,
     DiscountCodeModule,
     CronModule,
+    MailModule,
   ],
 })
 export class AppModule {}
