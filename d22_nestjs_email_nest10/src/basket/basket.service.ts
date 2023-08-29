@@ -12,12 +12,16 @@ import { ItemInBasket } from './item-in-basket.entity';
 import { UserService } from '../user/user.service';
 import { DataSource, Equal, FindOptionsWhere } from 'typeorm';
 import { User } from '../user/user.entity';
+import { MailService } from '../mail/mail.service';
+import { ShopItem } from '../shop/shop-item.entity';
+import { addedToBasketInfoEmailTemplate } from '../templates/email/added-to-basket-info';
 
 @Injectable()
 export class BasketService {
   constructor(
     @Inject(ShopService) private shopService: ShopService,
     @Inject(UserService) private userService: UserService,
+    @Inject(MailService) private mailService: MailService,
     private readonly dataSource: DataSource,
   ) {}
 
@@ -46,6 +50,12 @@ export class BasketService {
     item.count = count;
 
     await item.save();
+
+    await this.mailService.sendMail(
+      user.email,
+      'Dziękujemy za dodanie do koszyka!',
+      addedToBasketInfoEmailTemplate(),
+    );
 
     item.shopItem = shopItem;
     item.user = user;

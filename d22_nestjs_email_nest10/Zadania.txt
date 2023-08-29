@@ -70,4 +70,4 @@ przydatny link do nodemailera:
 https://nodemailer.com/smtp
 
 
-10:49
+NodeMailer Issue: https://github.com/nest-modules/mailer/issues/923
