@@ -77,3 +77,5 @@ wysyłanie plików za pomocą Nginx/apache
 res.set('X-Accel-Redirect', ścieżkaDoPliku); //Nginx moduł X-Accel
 res.set('X-sendfile', ścieżkaDoPliku); //Apache X-sendfile
 trzeba pamiętać o sprawdzeniu ścieżek, żeby ktoś nie wyszedł poza ścieżkę w góre!
+
+38min
