@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 export class AddItemDto {
   @IsString()
@@ -7,6 +7,6 @@ export class AddItemDto {
   @IsString()
   userId: string;
 
-  @IsString()
+  @IsNumber()
   count: number;
 }
